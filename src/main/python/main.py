@@ -14,10 +14,6 @@
 # See table 3 in the ADS1015/ADS1115 datasheet for more info on gain.
 from app.App import App
 
-GAIN = 1
-
-MAX_READ = 30782
-
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     App().start()

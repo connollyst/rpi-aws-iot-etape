@@ -16,5 +16,6 @@ COPY src/main/python/app/*.py /app/
 COPY src/main/python/app/adafruit/*.py /app/adafruit/
 COPY src/main/python/app/adafruit/Adafruit_ADS1x15/*.py /app/adafruit/Adafruit_ADS1x15/
 COPY src/main/python/app/aws/*.py /app/aws/
+COPY certs/ /certs/
 
 CMD [ "python3", "./main.py" ]
