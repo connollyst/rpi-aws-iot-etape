@@ -12,6 +12,8 @@ COPY requirements.txt /
 RUN python3 -m pip install -r requirements.txt
 
 COPY src/main/python/*.py /
-COPY src/main/python/Adafruit_ADS1x15/*.py /Adafruit_ADS1x15/
+COPY src/main/python/app/*.py /app/
+COPY src/main/python/app/aws/*.py /app/aws/
+COPY src/main/python/app/adafruit/Adafruit_ADS1x15/*.py /app/adafruit/Adafruit_ADS1x15/
 
 CMD [ "python3", "./main.py" ]
