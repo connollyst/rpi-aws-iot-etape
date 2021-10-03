@@ -4,7 +4,7 @@ from uuid import uuid4
 
 from .Logger import get_logger
 from .aws.AwsIotCore import AwsIotCore
-from .etape.eTape import eTape
+from .milone.eTape import eTape
 from .rpi.Host import Host
 
 
@@ -13,7 +13,7 @@ class App:
 
     AWS_ENDPOINT = 'a12dev37b8fhwi-ats.iot.us-west-2.amazonaws.com'
     AWS_IOT_MQTT_TOPIC = 'atlas'  # 'iot/devices/readings'
-    AWS_CLIENT_ID = "iot-etape-" + str(uuid4())
+    AWS_CLIENT_ID = "iot-milone-" + str(uuid4())
 
     def __init__(self, sensor=None, aws=None):
         self._sensor = sensor or eTape(host=Host(), logger=self.LOGGER)

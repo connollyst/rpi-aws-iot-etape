@@ -7,12 +7,12 @@ class eTape:
     GAIN = 1
     MAX_READ = 30782
 
-    def __init__(self, host=None, logger=None):
+    def __init__(self, host=None, adc=None, logger=None):
         if not host:
             raise RuntimeError("host required")
         self._host = host
         self._logger = logger
-        self._adc = Adafruit_ADS1x15.ADS1115()
+        self._adc = adc or Adafruit_ADS1x15.ADS1115()
         self._address = 72
         self._value = None
 
@@ -26,7 +26,7 @@ class eTape:
 
     def to_json(self):
         return {
-            "name": "rpi-ads1115-etape",
+            "name": "rpi-ads1115-milone",
             "host": self._host.identifier,
             "addressType": "I2C",
             "address": self._address,
