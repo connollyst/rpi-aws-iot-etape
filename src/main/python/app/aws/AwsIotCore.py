@@ -48,7 +48,7 @@ class AwsIotCore:
             pri_key_filepath=self.private_key_filepath,
             ca_filepath=self.ca_filepath,
             client_id=client_id,
-            clean_session=False,
+            clean_session=True,
             keep_alive_secs=30,
         )
         self._logger.info("Connecting to {} with client ID '{}'...".format(self.endpoint, client_id))

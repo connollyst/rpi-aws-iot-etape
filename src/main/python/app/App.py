@@ -1,3 +1,4 @@
+import json
 import time
 from uuid import uuid4
 
@@ -11,7 +12,7 @@ class App:
     LOGGER = get_logger(__name__)
 
     AWS_ENDPOINT = 'a12dev37b8fhwi-ats.iot.us-west-2.amazonaws.com'
-    AWS_IOT_MQTT_TOPIC = 'atlas'  # 'iot/devices/readings'
+    AWS_IOT_MQTT_TOPIC = 'etape'  # 'iot/devices/readings'
     AWS_CLIENT_ID = "iot-etape-" + str(uuid4())
 
     GAIN = 1
@@ -31,7 +32,7 @@ class App:
     def start(self):
         while True:
             self._run()
-            time.sleep(10)
+            time.sleep(30)
 
     def _run(self):
         writer = AwsIotCore(endpoint=self.AWS_ENDPOINT, logger=self.LOGGER)
@@ -41,5 +42,5 @@ class App:
             'raw': value,
             'percent': (value / self.MAX_READ)
         }
-        writer.write(self.AWS_IOT_MQTT_TOPIC, data)
-        self.LOGGER.info(data)
+        writer.write(self.AWS_IOT_MQTT_TOPIC, json.dumps(data, indent=4, default=str))
+        writer.disconnect()
