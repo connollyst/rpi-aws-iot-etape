@@ -4,4 +4,5 @@ awsiotsdk==1.7.1
 Adafruit-GPIO==1.0.3
 # Raspberry Pi Dependencies
 smbus
+getmac
 fake_rpi
