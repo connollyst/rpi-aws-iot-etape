@@ -16,7 +16,7 @@ COPY src/main/python/app/*.py /app/
 COPY src/main/python/app/adafruit/*.py /app/adafruit/
 COPY src/main/python/app/adafruit/Adafruit_ADS1x15/*.py /app/adafruit/Adafruit_ADS1x15/
 COPY src/main/python/app/aws/*.py /app/aws/
-COPY src/main/python/app/milone/*.py /app/etape/
+COPY src/main/python/app/milone/*.py /app/milone/
 COPY src/main/python/app/rpi/*.py /app/rpi/
 COPY certs/ /certs/
 

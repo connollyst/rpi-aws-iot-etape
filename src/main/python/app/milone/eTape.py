@@ -4,6 +4,10 @@ from ..adafruit import Adafruit_ADS1x15
 
 
 class eTape:
+    NAME = "rpi-ads1115-etape"
+    TYPE = "level"
+    MODULE = "eTape"
+
     GAIN = 1
     MAX_READ = 30782
     SAMPLE_COUNT = 10
@@ -35,13 +39,14 @@ class eTape:
 
     def to_json(self):
         return {
-            "name": "rpi-ads1115-milone",
+            "name": self.NAME,
+            "module": self.MODULE,
+            "version": "0.2",
             "host": self._host.identifier,
             "addressType": "I2C",
             "address": self._address,
-            "module": "eTape",
-            "version": "0.1",
             "reading": {
+                "type": self.TYPE,
                 "value": self._value,
                 "timestamp": time.time()
             }
