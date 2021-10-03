@@ -31,7 +31,11 @@ class eTape:
         return self._value
 
     def _take_samples(self, count=SAMPLE_COUNT):
-        return [self._adc.read_adc(0, gain=self.GAIN) for _ in range(count)]
+        start = time.time()
+        samples = [self._adc.read_adc(0, gain=self.GAIN) for _ in range(count)]
+        duration = time.time() - start
+        self._logger.info("Took {} samples in {}ms: {}".format(len(samples), duration, samples))
+        return samples
 
     def _average_samples(self, samples, trim=EDGE_SAMPLE_COUNT):
         readings = samples[trim:len(samples) - trim]

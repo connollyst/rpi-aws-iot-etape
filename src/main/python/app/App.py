@@ -20,6 +20,9 @@ class App:
         self._writer = aws or AwsIotCore(endpoint=self.AWS_ENDPOINT, logger=self.LOGGER)
 
     def start(self):
+        # Every half second take a reading
+        # Calculate the current rate of change
+        # The higher the rate of change, the more frequent messaging to AWS IoT
         while True:
             self._run()
             time.sleep(30)
