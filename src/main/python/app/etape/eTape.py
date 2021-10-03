@@ -13,6 +13,7 @@ class eTape:
         self._host = host
         self._logger = logger
         self._adc = Adafruit_ADS1x15.ADS1115()
+        self._address = 72
         self._value = None
 
         # Note you can change the I2C address from its default (0x48), and/or the I2C
@@ -28,7 +29,7 @@ class eTape:
             "name": "rpi-ads1115-etape",
             "host": self._host.identifier,
             "addressType": "I2C",
-            "address": "?",
+            "address": self._address,
             "module": "eTape",
             "version": "0.1",
             "reading": {
