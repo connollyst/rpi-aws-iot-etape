@@ -11,6 +11,8 @@ RUN sudo apt-get update && \
 COPY requirements.txt /
 RUN python3 -m pip install -r requirements.txt
 
+ENV LOG_LEVEL=Info
+
 COPY src/main/python/*.py /
 COPY src/main/python/app/*.py /app/
 COPY src/main/python/app/adafruit/*.py /app/adafruit/
