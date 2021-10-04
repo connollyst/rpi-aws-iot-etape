@@ -16,45 +16,32 @@ class test_App(unittest.TestCase):
         mock_adc = MagicMock()
         sensor = eTape(host=MagicMock(), adc=mock_adc, logger=self.LOGGER)
         # When
-        sensor.read()
+        sensor.read(0, 1)
         # Then
         mock_adc.read_adc.assert_called()
 
-    def test_should_take_average_of_readings(self):
+    def test_should_return_raw_reading_in_json(self):
         # Given
-        avg_value = 1
+        raw_value = 42
         mock_adc = MagicMock()
-        mock_adc.read_adc = Mock()
-        mock_adc.read_adc.side_effect = [avg_value for _ in range(eTape.SAMPLE_COUNT)]
+        mock_adc.read_adc = Mock(return_value=raw_value)
         sensor = eTape(host=MagicMock(), adc=mock_adc, logger=self.LOGGER)
         # When
-        reading = sensor.read()
+        sensor.read(0, 1)
         # Then
-        self.assertEqual(avg_value, reading)
+        self.assertEqual(raw_value, sensor.to_json()['reading']['raw'])
 
-    def test_should_take_average_of_readings_excluding_edges(self):
+    def test_should_return_relative_reading_in_json(self):
         # Given
-        avg_value = 1
+        raw_value = 42
+        relative_value = round(raw_value / eTape.MAX_READ, 4)
         mock_adc = MagicMock()
-        mock_adc.read_adc = Mock()
-        mock_adc.read_adc.side_effect = [0, 0, 0, avg_value, avg_value, avg_value, avg_value, 0, 0, 0]
+        mock_adc.read_adc = Mock(return_value=raw_value)
         sensor = eTape(host=MagicMock(), adc=mock_adc, logger=self.LOGGER)
         # When
-        reading = sensor.read()
+        sensor.read(0, 1)
         # Then
-        self.assertEqual(avg_value, reading)
-
-    def test_should_return_reading_in_json(self):
-        # Given
-        avg_value = 42
-        mock_adc = MagicMock()
-        mock_adc.read_adc = Mock()
-        mock_adc.read_adc.side_effect = [avg_value for _ in range(eTape.SAMPLE_COUNT)]
-        sensor = eTape(host=MagicMock(), adc=mock_adc, logger=self.LOGGER)
-        # When
-        sensor.read()
-        # Then
-        self.assertEqual(avg_value, sensor.to_json()['reading']['value'])
+        self.assertEqual(relative_value, sensor.to_json()['reading']['value'])
 
 
 if __name__ == '__main__':

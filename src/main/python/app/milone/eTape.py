@@ -42,19 +42,23 @@ class eTape:
         self._thread = None
 
     def start(self):
-        self._logger.info("Starting eTape..")
+        self._logger.debug("Starting eTape..")
         self._running = True
         self._thread = Thread(target=self._take_samples, args=(0, self.GAIN))
         self._thread.start()
 
     def _take_samples(self, index, gain):
         while self._running:
-            self._value = self._adc.read_adc(index, gain=gain)
-            self._logger.debug("Raw sample: {}".format(self._value))
-            self._values.append(self._value)
-            if len(self._values) > self.SAMPLE_COUNT:
-                self._values.popleft()
+            self.read(index, gain)
             time.sleep(self.SAMPLE_FREQUENCY)
+
+    def read(self, index, gain):
+        self._value = self._adc.read_adc(index, gain=gain)
+        self._logger.debug("Raw sample: {}".format(self._value))
+        self._values.append(self._value)
+        if len(self._values) > self.SAMPLE_COUNT:
+            self._values.popleft()
+        return self._value
 
     def variance(self):
         samples = list(self._values)
@@ -75,9 +79,6 @@ class eTape:
     def stop(self):
         self._running = False
         self._thread.join()
-
-    def read(self):
-        return self._value
 
     def to_json(self):
         return {
