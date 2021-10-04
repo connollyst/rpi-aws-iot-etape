@@ -55,15 +55,15 @@ class AwsIotCore:
         connect_future = mqtt_connection.connect()
         connect_future.result()
         self._connection = mqtt_connection
-        self._logger.info("Connected to AWS!")
+        self._logger.debug("Connected to AWS.")
 
     def write(self, topic, json):
-        self._logger.info("Sending to {}: {}".format(topic, json))
+        self._logger.info("Sending to '{}': {}".format(topic, json))
         self._connection.publish(topic=topic, payload=json, qos=mqtt.QoS.AT_LEAST_ONCE)
         time.sleep(1)
 
     def disconnect(self):
-        self._logger.info("Disconnecting from AWS...")
+        self._logger.debug("Disconnecting from AWS...")
         disconnect_future = self._connection.disconnect()
         disconnect_future.result()
-        self._logger.info("Disconnected from AWS.")
+        self._logger.debug("Disconnected from AWS.")

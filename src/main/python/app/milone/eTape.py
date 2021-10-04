@@ -1,4 +1,6 @@
+import statistics
 import time
+from collections import deque
 from threading import Thread
 
 from ..adafruit import Adafruit_ADS1x15
@@ -21,7 +23,7 @@ class eTape:
     GAIN = 1
     MAX_READ = 30782
     SAMPLE_COUNT = 10
-    EDGE_SAMPLE_COUNT = 3
+    SAMPLE_FREQUENCY = 0.5
 
     def __init__(self, host=None, adc=None, logger=None):
         if not host:
@@ -35,6 +37,8 @@ class eTape:
         self._address = int(self.DEFAULT_ADDRESS, 0)
         self._running = False
         self._value = None
+        self._values = deque()
+        self._variance = {}
         self._thread = None
 
     def start(self):
@@ -46,8 +50,27 @@ class eTape:
     def _take_samples(self, index, gain):
         while self._running:
             self._value = self._adc.read_adc(index, gain=gain)
-            self._logger.info("Took sample: {}".format(self._value))
-            time.sleep(0.5)
+            self._logger.debug("Raw sample: {}".format(self._value))
+            self._values.append(self._value)
+            if len(self._values) > self.SAMPLE_COUNT:
+                self._values.popleft()
+            time.sleep(self.SAMPLE_FREQUENCY)
+
+    def variance(self):
+        samples = list(self._values)
+        if not samples:
+            return 0
+        pvariance = statistics.pvariance(samples)
+        pstdev = statistics.pstdev(samples)
+        mean = statistics.mean(samples)
+        cv = pstdev / mean
+        self._variance = {
+            'pvariance': pvariance,
+            'pstdev': pstdev,
+            'mean': mean,
+            'cv': cv
+        }
+        return round(cv, 2)
 
     def stop(self):
         self._running = False
@@ -60,13 +83,15 @@ class eTape:
         return {
             "name": self.NAME,
             "module": self.MODULE,
-            "version": "0.3",
+            "version": "0.4",
             "host": self._host.identifier,
             "addressType": "I2C",
             "address": self._address,
             "reading": {
                 "type": self.TYPE,
-                "value": self._value,
+                "raw": self._value,
+                "value": round(self._value / self.MAX_READ, 4),
+                "variance": self._variance,
                 "timestamp": time.time()
             }
         }
