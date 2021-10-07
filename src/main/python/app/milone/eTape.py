@@ -8,6 +8,7 @@ class eTape:
     TYPE = "level"
     MODULE = "eTape"
     MAX_READ = 30782
+    MIN_READ = 4650
     SAMPLE_COUNT = 10
 
     def __init__(self, index, gain, logger=None):
@@ -19,7 +20,7 @@ class eTape:
         self._variance = {}
 
     def read(self, adc):
-        self._value = adc.read_adc(self._index, self._gain)
+        self._value = max(0, adc.read_adc(self._index, self._gain) - self.MIN_READ)
         self._logger.debug("eTape #{}: {}".format(self._index, self._value))
         self._values.append(self._value)
         if len(self._values) > self.SAMPLE_COUNT:
