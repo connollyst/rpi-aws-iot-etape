@@ -4,7 +4,7 @@ import fake_rpi
 
 from app.App import App
 from app.Logger import get_logger
-from app.milone.eTape import eTape
+from app.milone.eTapeReader import eTapeReader
 from app.rpi.Host import Host
 
 LOGGER = get_logger(__name__)
@@ -28,6 +28,6 @@ if __name__ == '__main__':
     sys.modules['smbus'] = fake_rpi.smbus  # Fake smbus (I2C)
     fake_host = Host()
     fake_adc = FakeADC(LOGGER)
-    fake_tape = eTape(host=fake_host, adc=fake_adc, logger=LOGGER)
+    fake_tape = eTapeReader(host=fake_host, adc=fake_adc, logger=LOGGER)
     fake_app = App(logger=LOGGER, sensor=fake_tape)
     fake_app.start()

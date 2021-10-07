@@ -3,13 +3,13 @@ import time
 from uuid import uuid4
 
 from .aws.AwsIotCore import AwsIotCore
-from .milone.eTape import eTape
+from .milone.eTapeReader import eTapeReader
 from .rpi.Host import Host
 
 
 class App:
     AWS_ENDPOINT = 'a12dev37b8fhwi-ats.iot.us-west-2.amazonaws.com'
-    AWS_IOT_MQTT_TOPIC = 'atlas'  # 'iot/devices/readings'
+    AWS_IOT_MQTT_TOPIC = 'iot/devices/readings'
     AWS_CLIENT_ID = "iot-milone-" + str(uuid4())
 
     MIN_DELAY = 0.5
@@ -18,7 +18,7 @@ class App:
 
     def __init__(self, logger, sensor=None, aws=None):
         self._logger = logger
-        self._sensor = sensor or eTape(host=Host(), logger=self._logger)
+        self._sensor = sensor or eTapeReader(host=Host(), logger=self._logger)
         self._writer = aws or AwsIotCore(endpoint=self.AWS_ENDPOINT, logger=self._logger)
         self._running = False
         self._last_publication = 0

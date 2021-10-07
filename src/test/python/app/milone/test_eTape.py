@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import MagicMock, Mock
 
 from src.main.python.app.Logger import get_logger
-from src.main.python.app.milone.eTape import eTape
+from src.main.python.app.milone.eTapeReader import eTape
 
 
 class test_App(unittest.TestCase):
