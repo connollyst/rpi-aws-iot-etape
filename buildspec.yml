@@ -6,8 +6,8 @@ phases:
       - pip install -r requirements.txt
   build:
     commands:
-      - python -m unittest discover -s app
+      - python -m unittest discover -s src/test/python/app
 artifacts:
   files:
     - '**/*'
-  base-directory: app
+  base-directory: src/main/python
