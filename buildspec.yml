@@ -3,10 +3,14 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - echo Installing Python dependencies..
       - pip install -r requirements.txt
   build:
     commands:
+      - echo Running tests..
       - python -m unittest discover -s src/test/python/app
+      - echo Building the Docker image...
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
 artifacts:
   files:
     - '**/*'
