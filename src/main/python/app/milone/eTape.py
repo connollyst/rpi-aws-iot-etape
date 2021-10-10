@@ -7,12 +7,20 @@ class eTape:
     NAME = "rpi-ads1115-etape"
     TYPE = "level"
     MODULE = "eTape"
-    MAX_READ = 30782
+    MIN_INDEX = 0
+    MAX_INDEX = 3
+    MIN_GAIN = 0
+    MAX_GAIN = 1
     MIN_READ = 4650
+    MAX_READ = 30782
     SAMPLE_COUNT = 10
 
     def __init__(self, index, gain, logger=None):
+        if index not in range(self.MIN_INDEX, self.MAX_INDEX + 1):
+            raise ValueError('index {} is outside valid range: {}-{}'.format(index, self.MIN_INDEX, self.MAX_INDEX))
         self._index = index
+        if gain not in range(self.MIN_GAIN, self.MAX_GAIN + 1):
+            raise ValueError('gain {} is outside valid range: {}'.format(gain, range(self.MIN_GAIN, self.MAX_GAIN)))
         self._gain = gain
         self._logger = logger
         self._value = None
@@ -20,7 +28,7 @@ class eTape:
         self._variance = {}
 
     def read(self, adc):
-        self._value = max(0, adc.read_adc(self._index, self._gain) - self.MIN_READ)
+        self._value = adc.read_adc(self._index, self._gain)
         self._logger.debug("eTape #{}: {}".format(self._index, self._value))
         self._values.append(self._value)
         if len(self._values) > self.SAMPLE_COUNT:

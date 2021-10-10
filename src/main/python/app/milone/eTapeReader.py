@@ -21,7 +21,6 @@ class eTapeReader:
     # See table 3 in the ADS1015/ADS1115 datasheet for more info on gain.
     GAIN = 1
     MAX_READ = 30782
-    SAMPLE_COUNT = 10
     SAMPLE_FREQUENCY = 0.5
 
     def __init__(self, host=None, adc=None, logger=None):
@@ -50,7 +49,7 @@ class eTapeReader:
             time.sleep(self.SAMPLE_FREQUENCY)
 
     def variance(self):
-        return max([sensor.variance() for sensor in self._sensors])
+        return max(sensor.variance() for sensor in self._sensors)
 
     def stop(self):
         self._running = False
