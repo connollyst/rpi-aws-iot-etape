@@ -20,6 +20,6 @@ COPY src/main/python/app/adafruit/Adafruit_ADS1x15/*.py /app/adafruit/Adafruit_A
 COPY src/main/python/app/aws/*.py /app/aws/
 COPY src/main/python/app/milone/*.py /app/milone/
 COPY src/main/python/app/rpi/*.py /app/rpi/
-COPY certs/ /certs/
+# COPY certs/ /certs/
 
 CMD [ "python3", "./main.py" ]
