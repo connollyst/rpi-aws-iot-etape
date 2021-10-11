@@ -11,9 +11,11 @@ phases:
       - id -u
       - whoami
       - apt update -y
-      - apt install -y curl sudo systemctl
+      - apt install -y curl sudo apt-utils
       - curl -sSL https://get.docker.com | sh
-      - sudo systemctl start docker
+      - sudo groupadd docker
+      - sudo usermod -aG docker ${USER}
+      - sudo dockerd
   #      - apt-get update
   #      - apt-get install -y qemu-system-arm qemu-user-static
   #  pre_build:
