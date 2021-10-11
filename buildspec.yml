@@ -8,8 +8,8 @@ version: 0.2
 phases:
   install:
     commands:
-      - apt update
-      - apt install curl
+      - apt update -y
+      - apt install -y curl
       - curl -sSL https://get.docker.com | sh
   #      - apt-get update
   #      - apt-get install -y qemu-system-arm qemu-user-static
