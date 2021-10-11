@@ -6,13 +6,17 @@ env:
     DOCKERHUB_PASS: "/dockerhub/credentials:password"
 
 phases:
+  install:
+    commands:
+      - apt-get update
+      - apt-get install -y qemu-system-arm qemu-user-static
   pre_build:
     commands:
       - docker login --username $DOCKERHUB_USER --password $DOCKERHUB_PASS
-      - apt-get update
-      - apt-get install -y qemu-system-arm qemu-user-static unzip curl apt-transport-https ca-certificates python-pip
+      #- pip install -r requirements.txt
   build:
     commands:
+      #- python -m unittest discover -s src/test/python/app
       - docker build -t connollyst/rpi-aws-iot-etape:latest .
   post_build:
     commands:
