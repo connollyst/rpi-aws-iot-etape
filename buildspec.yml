@@ -13,10 +13,10 @@ phases:
   build:
     commands:
       - python -m unittest discover -s src/test/python/app
-      - docker build -t connollyst/rpi-aws-iot-etap:latest .
+      - docker build -t connollyst/rpi-aws-iot-etape:latest .
   post_build:
     commands:
-      - docker push connollyst/rpi-aws-iot-etap:latest
+      - docker push connollyst/rpi-aws-iot-etape:latest
 artifacts:
   files:
     - '**/*'
