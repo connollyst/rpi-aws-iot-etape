@@ -1,16 +1,22 @@
 version: 0.2
 
+env:
+  secrets-manager:
+    DOCKERHUB_USER: "/dockerhub/credentials:username"
+    DOCKERHUB_PASS: "/dockerhub/credentials:password"
+
 phases:
   pre_build:
     commands:
-      - echo Installing Python dependencies..
+      - docker login --username $DOCKERHUB_USER --password $DOCKERHUB_PASS
       - pip install -r requirements.txt
   build:
     commands:
-      - echo Running tests..
       - python -m unittest discover -s src/test/python/app
-      - echo Building the Docker image...
       - docker build -t connollyst/rpi-aws-iot-etap:latest .
+  post_build:
+    commands:
+      - docker push connollyst/rpi-aws-iot-etap:latest
 artifacts:
   files:
     - '**/*'
