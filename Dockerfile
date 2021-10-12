@@ -8,8 +8,10 @@ RUN sudo apt-get update && \
     --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
-RUN python3 -m pip install awscli --upgrade --user
-RUN aws s3 ls
+RUN python3 -m pip --no-cache-dir install awscli --upgrade --user
+RUN which aws
+RUN which awscli
+RUN aws --version
 
 COPY requirements.txt /
 RUN python3 -m pip install -r requirements.txt
